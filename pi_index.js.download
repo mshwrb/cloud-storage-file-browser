@@ -1,0 +1,22 @@
+function psprt_info_trigger(psprt_a){$("nav").addClass("blur-efect");$(".top_content").addClass("blur-efect");var ccode=$(psprt_a).data("code");var prevcode=$(psprt_a).parent().prev(".passimg:not(.passimg-hide)").find("a").data("code");var nextcode=$(psprt_a).parent().nextAll(".passimg:not(.passimg-hide)").find("a").data("code");$("#psprt-cover").attr('src','countries/thum/'+ccode+'.png');$("#psprt-cover").attr('src','countries/'+ccode+'.png').on("load",function(){$("#psprt-cname").html($(psprt_a).data("cname"));$("#psprt-ms").html($(psprt_a).data("ms"));$("#psprt-rank").html($(psprt_a).data("rank"));$("#psprt-irank").html($(psprt_a).data("irank"));if($(psprt_a).data("courtesy")!=""){$(".psprt-view-courtesy").html(courtesy+" "+$(psprt_a).data("courtesy")+". ");}else{$(".psprt-view-courtesy").html("");}
+if($(psprt_a).hasClass("first-pass-img"))
+{$(".psprt-arrow-left").addClass("psprt-button-hide");}
+else if(prevcode)
+{$("#psprt-cover-back").attr('src','countries/'+prevcode+'.png');$(".psprt-arrow-left").removeClass("psprt-button-hide");}
+if($(psprt_a).hasClass("last-pass-img"))
+{$(".psprt-arrow-right").addClass("psprt-button-hide");}
+else if(nextcode)
+{$("#psprt-cover-next").attr('src','countries/'+nextcode+'.png');$(".psprt-arrow-right").removeClass("psprt-button-hide");}});$(".psprt-arrow-left").attr('data-code',prevcode);$(".psprt-arrow-right").attr('data-code',nextcode);history.pushState({},null,'?country='+ccode);$(".mobile-menu-container").addClass("mm-disable");$("html").addClass("scroll-disable");$(".psprt-view-links").each(function(){$(this).attr("href",($(this).data("url")+ccode));})
+$(".psprt-view-table-social .social-icon-menu").each(function(){$(this).attr("href",($(this).data("url")+ccode));})
+$(".psprt-view-dashboard").attr("href",$(".psprt-view-dashboard").data("url")+$(psprt_a).data("cname-en").toLowerCase().replace(/ /g,"-"));}
+var swipe=document.getElementById('psprt-view');var touchstartX=0;var touchstartY=0;var touchendX=0;var touchendY=0;swipe.addEventListener('touchstart',function(event){touchstartX=event.changedTouches[0].screenX;touchstartY=event.changedTouches[0].screenY;},false);swipe.addEventListener('touchend',function(event){touchendX=event.changedTouches[0].screenX;touchendY=event.changedTouches[0].screenY;handleSwipe();},false);function handleSwipe(){var param;var Ymove=touchstartY-touchendY;var Xmove=touchstartX-touchendX;if(Math.abs(Xmove)>Math.abs(Ymove)){if(Xmove>0){param=$(".psprt-arrow-right").attr("data-code");psprt_info_trigger(".psprt-"+param);}else{param=$(".psprt-arrow-left").attr("data-code");psprt_info_trigger(".psprt-"+param);}
+psprt_info_trigger(".psprt-"+param);}}
+var searchParams=new URLSearchParams(window.location.search)
+if(searchParams.has('country')){var param=searchParams.get('country');if($(".psprt-"+param).height()>0){psprt_info_trigger(".psprt-"+param);$(".psprt-view").addClass("opened");}}
+$(".passimg a").on("click touch",function(e){e.preventDefault();var psprtinfo=$(".psprt-view");psprt_info_trigger(this);$(psprtinfo).addClass("opened");})
+$(".pass-filters .pi_button").on("click touch",function(e){var param=$(this).attr("data-filter");$(".passview .passimg").removeClass("passimg-hide");$(".passview .passimg:not(."+param+")").addClass("passimg-hide");})
+$(".psprt-button-close").on("click touchstart",function(){$(".psprt-view").removeClass("opened");history.pushState({},null,'?');$("html").removeClass("scroll-disable");$("nav").removeClass("blur-efect");$(".top_content").removeClass("blur-efect");setTimeout(function(){$(".mobile-menu-container").removeClass("mm-disable");},300)})
+$(".psprt-button:not(.psprt-button-close)").on("click touch",function(e){var param=$(this).attr("data-code");psprt_info_trigger(".psprt-"+param);})
+$(".psprt-view-center").on("swipeleft",function(){});$(window).on("swipeleft touchstart",function(){});function fixHoverIssue(){$("#passports.passview .passimg").css({"height":"auto"});let fHeight=$("#passports.passview .passimg").height()+0.01;$("#passports.passview .passimg").css({"height":fHeight+"px"});}
+$(document).ready(function(){$("#passports").addClass("passview");fixHoverIssue();})
+$(window).resize(function(){fixHoverIssue();});
